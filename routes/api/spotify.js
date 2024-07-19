@@ -14,7 +14,7 @@ router.get('/login', function (req, res) {
     'https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
-      client_id: process.env.client_id,
+      client_id: process.env.SPOTIFY_CLIENT_ID,
       scope:
         'user-read-private user-read-email playlist-modify-private playlist-modify-public user-read-currently-playing user-read-playback-state user-modify-playback-state',
       redirect_uri: redirectURI,
@@ -36,13 +36,13 @@ router.get('/callback', function (req, res) {
     headers: {
       Authorization:
         'Basic ' +
-        Buffer.from(process.env.client_id + ':' + process.env.client_secret).toString('base64'),
+        Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'),
     },
     json: true,
   };
   request.post(authOptions, (error, response, body) => {
     const access_token = body.access_token;
-    const url = process.env.NODE_ENV ? process.env.FRONTEND_URL : 'http://localhost:3000/home';
+    const url = process.env.FRONTEND_URL ?? 'http://localhost:3000/home';
 
     res.redirect(url + '?access_token=' + access_token);
   });
