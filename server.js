@@ -62,6 +62,10 @@ io.on('connection', socket => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Playlistr!' });
+})
+
 console.log(`Listening on port ${port}.`);
 
 server.listen(port);
